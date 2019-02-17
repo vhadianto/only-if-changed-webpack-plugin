@@ -5,10 +5,16 @@ const asyncjs = require('async');
 function getFilesMtimes(files, concurrencyLimit, done) {
   const filesMtimes = {};
 
-  //const fileNames = Object.keys(files);
-  console.log('\n\n\n files', typeof files);
+  let fileNames;
+  if (files instanceof Set) {
+    fileNames = Object.keys(files);
+  }
+  else {
+    fileNames = files;
+  }
 
-  asyncjs.eachLimit(files, concurrencyLimit, function(file, fileDone) {
+
+  asyncjs.eachLimit(fileNames, concurrencyLimit, function(file, fileDone) {
     fs.stat(file, function(statErr, stat) {
       if (statErr) {
         if (statErr.code === 'ENOENT') return fileDone();

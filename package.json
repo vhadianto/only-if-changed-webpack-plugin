@@ -12,7 +12,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "async": "^1.5.2"
+    "async": "^1.5.2",
+    "lodash": "^4.17.11"
   },
   "devDependencies": {
     "eslint": "^2.7.0",

@@ -1,9 +1,20 @@
-var fs = require('fs');
-var async = require('async');
+
+const fs = require('fs');
+const asyncjs = require('async');
 
 function getFilesMtimes(files, concurrencyLimit, done) {
-  var filesMtimes = {};
-  async.eachLimit(files, concurrencyLimit, function(file, fileDone) {
+  const filesMtimes = {};
+
+  let fileNames;
+  if (files instanceof Set) {
+    fileNames = Array.from(files);
+  }
+  else {
+    fileNames = files;
+  }
+
+
+  asyncjs.eachLimit(fileNames, concurrencyLimit, function(file, fileDone) {
     fs.stat(file, function(statErr, stat) {
       if (statErr) {
         if (statErr.code === 'ENOENT') return fileDone();
@@ -39,7 +50,7 @@ function getFilesChanges(filesMtimes, concurrencyLimit, done) {
     });
   }
 
-  async.eachLimit(files, concurrencyLimit, eachFile, function() {
+  asyncjs.eachLimit(files, concurrencyLimit, eachFile, function() {
     done(deleted, changed);
   });
 }

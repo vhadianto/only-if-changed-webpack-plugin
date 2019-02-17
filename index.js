@@ -1,5 +1,6 @@
 var fs = require('fs');
 var path = require('path');
+var mkdirp = require('mkdirp');
 
 var mtime = require('./mtime');
 var digest = require('./digest');
@@ -15,10 +16,17 @@ function OnlyIfChangedPlugin(opts) {
   this.cacheIdentifier = digest.digestSHA1(JSON.stringify(opts.cacheIdentifier));
   this.concurrencyLimit = opts.concurrencyLimit || CONCURRENCY_LIMIT;
   this.cache = makeCacheRecord();
+  this.makeCacheDirectory();
 }
 
 OnlyIfChangedPlugin.prototype.getCacheFilePath = function() {
   return path.join(this.cacheDirectory, 'onlyifchanged-' + SCHEMA_VERSION + '-' + this.cacheIdentifier + '.json');
+};
+
+OnlyIfChangedPlugin.prototype.makeCacheDirectory = function() {
+  mkdirp(this.cacheDirectory, function(err) {
+    if (err) console.error(err);
+  });
 };
 
 OnlyIfChangedPlugin.prototype.writeCacheFile = function() {

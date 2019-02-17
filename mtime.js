@@ -1,11 +1,12 @@
+
 const fs = require('fs');
 const asyncjs = require('async');
 
 function getFilesMtimes(files, concurrencyLimit, done) {
   const filesMtimes = {};
 
-  const fileNames = Object.keys(files);
-  asyncjs.eachLimit(fileNames, concurrencyLimit, function(file, fileDone) {
+  //const fileNames = Object.keys(files);
+  asyncjs.eachLimit(files, concurrencyLimit, function(file, fileDone) {
     fs.stat(file, function(statErr, stat) {
       if (statErr) {
         if (statErr.code === 'ENOENT') return fileDone();

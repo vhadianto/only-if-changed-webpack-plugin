@@ -7,7 +7,7 @@ function getFilesMtimes(files, concurrencyLimit, done) {
 
   let fileNames;
   if (files instanceof Set) {
-    fileNames = Object.keys(files);
+    fileNames = Array.from(files);
   }
   else {
     fileNames = files;

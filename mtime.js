@@ -6,6 +6,8 @@ function getFilesMtimes(files, concurrencyLimit, done) {
   const filesMtimes = {};
 
   //const fileNames = Object.keys(files);
+  console.log('\n\n\n files', typeof files);
+
   asyncjs.eachLimit(files, concurrencyLimit, function(file, fileDone) {
     fs.stat(file, function(statErr, stat) {
       if (statErr) {
